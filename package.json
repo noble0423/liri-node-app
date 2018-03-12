@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/noble0423/liri-node-app#readme",
   "dependencies": {
-    "mdash": "^0.1.3",
-    "mdash-node": "^1.0.1"
+    "dotenv": "^5.0.1",
+    "request": "^2.83.0",
+    "twitter": "^1.7.1"
   }
 }
