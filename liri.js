@@ -40,26 +40,34 @@ function commandEntry() {
 // =========================================================================================================================================================================================
 function twitter() {
     var client = new Twitter(keys.twitter);
-    var params = {screen_name: 'noblebot5000'};
+    var params = {screen_name: 'noblebot5000', count: 20};
     
     client.get('statuses/user_timeline', params, function(error, tweets, response) {
         if (!error) {
             console.log("//////////////////////////////////////////////////////");
-            console.log("Most recent tweets from " + params.screen_name + " are listed below (starting w/ most recent):");
+            console.log("20 most recent tweets from " + params.screen_name + " are listed below (starting w/ most recent):");
+            fs.appendFile("log.txt", "   //////////////////   " + "20 most recent tweets from " + params.screen_name + " are listed below (starting w/ most recent):", function(error) {
+                if (error) {
+                    return console.log("Error!!" + error);
+                }
+            })
             for (var i = 0; i < tweets.length; i++) {
                 console.log("Tweet: " + tweets[i].text);
                 console.log("Created: " + tweets[i].created_at);
+                fs.appendFile("log.txt", " Tweet: " + tweets[i].text + ", Created: " + tweets[i].created_at, function(error) {
+                    if (error) {
+                        return console.log("Error!!" + error);
+                    }
+                })
                 
             }
+            fs.appendFile("log.txt", "   //////////////////   ", function(error) {
+                if (error) {
+                    return console.log("Error!!" + error);
+                }
+            })
             console.log("//////////////////////////////////////////////////////");
-
-            // fs.appendFile("log.txt", "Most recent tweets from: " + params.screen_name + ", Tweet: " + tweets[i].text + ", Created: " + tweets[i].created_at, function(error) {
-                
-            //     if (error) {
-            //         return console.log("Error!!" + error);
-            //     }
-            //         console.log("Info has been added to log.txt file.");
-            // });
+            console.log("Info has been added to log.txt file.");
         }
 
         else {
@@ -123,15 +131,6 @@ function spotifyThis() {
     var nodeArgs = process.argv;
     var songName = "";
 
-    // for (var i = 3; i < nodeArgs.length; i++) {
-    //     if (i > 3 && i < nodeArgs.length) {
-    //         songName += "+" + nodeArgs[i];
-    //     }
-
-    //     else {
-    //         songName += nodeArgs[i];
-    //     }
-    // }
     for (var i = 2; i < nodeArgs.length; i++) {
         if (i <= 2) {
             songName = "the+sign+OR+ace+of+base";
@@ -145,7 +144,7 @@ function spotifyThis() {
             songName += "+" + nodeArgs[i];
         }
     }
-    
+
     spotify.search({type: 'track', query: songName, limit: 1}, function(err, data) {
         if (err) {
           return console.log('Error occurred: ' + err);
