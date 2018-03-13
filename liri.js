@@ -6,34 +6,37 @@ var keys = require("./keys.js");
 var Twitter = require("twitter");
 var Spotify = require("node-spotify-api");
 
-// 
-
 // Taking in manual commands from user
 // =========================================================================================================================================================================================
-var command = process.argv[2];
-fs.appendFile("log.txt", "COMMAND ENTERED: " + command, function(error) {
-    if (error) {
-        return console.log ("Error!!" + error);
-    }
-});
+function commandEntry() {
+    // var unknown = process.argv;
+    var command = process.argv[2];
+    fs.appendFile("log.txt", " COMMAND ENTERED: " + command + " ", function(error) {
+        if (error) {
+            return console.log ("Error!!" + error);
+        }
+    });
 
-switch (command) {
-    case "my-tweets":
-        twitter();
-        break;
+    switch (command) {
+        case "my-tweets":
+            twitter();
+            break;
     
-    case "spotify-this-song":
-        spotifyThis();
-        break;
+        case "spotify-this-song":
+            spotifyThis();
+            break;
 
-    case "movie-this":
-        movieThis();
-        break;
+        case "movie-this":
+            movieThis();
+            break;
 
-    case "do-what-it-says":
-        console.log("this should run the random.txt file action function, but it hasn't been created yet");
-        break;
+        case "do-what-it-says":
+            doWhatItSays();
+            break;
+    }
 }
+
+
 
 
 // TWITTER
@@ -75,22 +78,23 @@ function movieThis() {
     var nodeArgs = process.argv;
     var movieName = "";
 
-    for (var i = 3; i < nodeArgs.length; i++) {
-        // if (i < 3 && i < nodeArgs.length) {
-        //     movieName = "Mr+Nobody";
-        // }
-        if (i > 3 && i < nodeArgs.length) {
-            movieName += "+" + nodeArgs[i];
+    for (var i = 2; i < nodeArgs.length; i++) {
+        if (i <= 2) {
+            movieName = "Mr+Nobody";
+        }
+
+        else if (i === 3) {
+            movieName = nodeArgs[i];
         }
 
         else {
-            movieName += nodeArgs[i];
+            movieName += "+" + nodeArgs[i];
         }
     }
 
     var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
 
-    // console.log(queryUrl);
+    console.log(queryUrl);
 
     request(queryUrl, function(error, response, body) {
         if (!error && response.statusCode === 200) {
@@ -157,3 +161,29 @@ function spotifyThis() {
         })
     });
 };
+
+// Do What It Says
+// =========================================================================================================================================================================================
+function doWhatItSays() {
+    fs.readFile("random.txt", "utf-8", function(error, data) {
+        if (error) {
+            return console.log(error);
+        }
+        var dataArr = data.split(",");
+        console.log("This should be the command and run back through function commandEntry(): " + dataArr[0]);
+        console.log("This should be process.argv[3] and run back through function commandEntry(): " + dataArr[1]);
+        process.argv = "node liri.js " + dataArr[0] + " " + dataArr[1];
+        
+        // process.argv = "node liri.js " + dataArr[0] + dataArr[1];
+        // console.log(process.argv);
+        // console.log("Ryans-MBP:liri-node-app noble0423$ node liri.js" + dataArr[0] + " " + dataArr[1]);
+        // commandEntry(process.argv);
+        // process.exit();
+        // console.log("after process.exit()");
+        commandEntry(process.argv);
+    })
+    
+}
+
+// Starts Liri
+commandEntry();
