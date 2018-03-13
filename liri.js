@@ -1,5 +1,4 @@
 var dotenv = require("dotenv").config();
-
 var fs = require("fs");
 var request = require("request");
 var keys = require("./keys.js");
@@ -35,8 +34,6 @@ function commandEntry() {
             break;
     }
 }
-
-
 
 
 // TWITTER
@@ -94,8 +91,6 @@ function movieThis() {
 
     var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
 
-    console.log(queryUrl);
-
     request(queryUrl, function(error, response, body) {
         if (!error && response.statusCode === 200) {
             console.log("//////////////////////////////////////////////////////");
@@ -116,7 +111,6 @@ function movieThis() {
                     return console.log("Error!!" + error);
                 }
                 console.log("Info has been added to log.txt file.");
-
             });
         }
     });
@@ -129,16 +123,29 @@ function spotifyThis() {
     var nodeArgs = process.argv;
     var songName = "";
 
-    for (var i = 3; i < nodeArgs.length; i++) {
-        if (i > 3 && i < nodeArgs.length) {
-            songName += "+" + nodeArgs[i];
+    // for (var i = 3; i < nodeArgs.length; i++) {
+    //     if (i > 3 && i < nodeArgs.length) {
+    //         songName += "+" + nodeArgs[i];
+    //     }
+
+    //     else {
+    //         songName += nodeArgs[i];
+    //     }
+    // }
+    for (var i = 2; i < nodeArgs.length; i++) {
+        if (i <= 2) {
+            songName = "the+sign+OR+ace+of+base";
+        }
+
+        else if (i === 3) {
+            songName = nodeArgs[i];
         }
 
         else {
-            songName += nodeArgs[i];
+            songName += "+" + nodeArgs[i];
         }
     }
-
+    
     spotify.search({type: 'track', query: songName, limit: 1}, function(err, data) {
         if (err) {
           return console.log('Error occurred: ' + err);
