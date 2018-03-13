@@ -54,12 +54,11 @@ function twitter() {
             for (var i = 0; i < tweets.length; i++) {
                 console.log("Tweet: " + tweets[i].text);
                 console.log("Created: " + tweets[i].created_at);
-                fs.appendFile("log.txt", " Tweet: " + tweets[i].text + ", Created: " + tweets[i].created_at, function(error) {
+                fs.appendFile("log.txt", "Tweet: " + tweets[i].text + ", Created: " + tweets[i].created_at + "; ", function(error) {
                     if (error) {
                         return console.log("Error!!" + error);
                     }
                 })
-                
             }
             fs.appendFile("log.txt", "   //////////////////   ", function(error) {
                 if (error) {
@@ -159,7 +158,7 @@ function spotifyThis() {
         console.log("Preview URL: " + data.tracks.items[0].preview_url); 
         console.log("//////////////////////////////////////////////////////");
 
-        fs.appendFile("log.txt", "   //////////////////   " + "Song Title: " + data.tracks.items[0].name + "Artist: " + data.tracks.items[0].album.artists[0].name + "Artist URL: " + data.tracks.items[0].album.artists[0].external_urls.spotify + "Album Title: " + data.tracks.items[0].album.name + "Released: " + data.tracks.items[0].album.release_date + "Preview URL: " + data.tracks.items[0].preview_url + "   //////////////////   ", function(error) {
+        fs.appendFile("log.txt", "   //////////////////   " + "Song Title: " + data.tracks.items[0].name + ", Artist: " + data.tracks.items[0].album.artists[0].name + ", Artist URL: " + data.tracks.items[0].album.artists[0].external_urls.spotify + ", Album Title: " + data.tracks.items[0].album.name + ", Released: " + data.tracks.items[0].album.release_date + ", Preview URL: " + data.tracks.items[0].preview_url + "   //////////////////   ", function(error) {
             if (error) {
                 return console.log("Error!!" + error);
             }
@@ -186,7 +185,7 @@ function doWhatItSays() {
         // commandEntry(process.argv);
         // process.exit();
         // console.log("after process.exit()");
-        commandEntry(process.argv);
+        // commandEntry(process.argv);
     })
     
 }
